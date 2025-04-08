@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { allCoffee, oneCoffee, addCoffeePage,
-    addCoffee, editCoffeePage, editCoffee, deleteCoffee } from '../controllers/coffeeController';
+    addCoffee, editCoffeePage, editCoffee, deleteCoffee } from '../controllers/chatController';
 
 const router = Router();
 

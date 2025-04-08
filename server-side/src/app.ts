@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { theGatheringdb } from './models/db';
 import { UserFactory } from './models/circleuser';
 import { ChatFactory } from './models/circlechat';
+import userRoutes from './routes/userRoutes';
 
 const cors = require('cors');
 const corsOptions = {
@@ -20,7 +21,7 @@ ChatFactory(theGatheringdb);
 
 // Routes
 // app.use('/api', chatRoutes);
-// app.use('/api', userRoutes);
+app.use('/api', userRoutes);
 
 app.get('/test', (req, res) => {
     res.send('Test route works!');
@@ -31,7 +32,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(404).end();
 });
 
-theGatheringdb.sync({ force: true }) 
+theGatheringdb.sync() 
     .then(() => {
         console.info("Connected to the theGatheringdb and synced models!");
     })
@@ -40,6 +41,6 @@ theGatheringdb.sync({ force: true })
     });
 
 // Start server
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+app.listen(5000, () => {
+    console.log('Server is running on http://localhost:5000');
 });
