@@ -15,12 +15,12 @@ export function ChatFactory(sequelize: Sequelize) {
             primaryKey: true,
             allowNull: false
         },
-        userId: {
+        userId: { 
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: User,
-                key: "userId" //referencing userId from our User model in UserFactory
+                key: "id" 
             },
             onDelete: "CASCADE" 
         },

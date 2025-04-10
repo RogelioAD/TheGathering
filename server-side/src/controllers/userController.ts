@@ -21,7 +21,6 @@ export const createUser: RequestHandler = async (req, res, next) => {
 
         res.status(201).json({
             username: newUser.username,
-            userId: newUser.userId,
             firstName: newUser.firstName,
             lastName: newUser.lastName
         });
@@ -61,7 +60,7 @@ export const getProfile: RequestHandler = async (req, res, next) => {
         const itemId = req.params.id;
 
         const user = await User.findOne({
-            where: { username: itemId }
+            where: { id: itemId }
         });
 
         if (!user) {

@@ -3,6 +3,7 @@ import { theGatheringdb } from './models/db';
 import { UserFactory } from './models/circleuser';
 import { ChatFactory } from './models/circlechat';
 import userRoutes from './routes/userRoutes';
+import chatRoutes from './routes/chatRoutes';
 
 const cors = require('cors');
 const corsOptions = {
@@ -20,8 +21,8 @@ UserFactory(theGatheringdb);
 ChatFactory(theGatheringdb);
 
 // Routes
-// app.use('/api', chatRoutes);
-app.use('/api', userRoutes);
+app.use('/chatapi', chatRoutes);
+app.use('/userapi', userRoutes);
 
 app.get('/test', (req, res) => {
     res.send('Test route works!');

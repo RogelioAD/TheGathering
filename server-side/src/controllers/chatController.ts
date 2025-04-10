@@ -1,19 +1,59 @@
 import { RequestHandler } from "express";
+import { Chat } from "../models/circlechat";
+import { verifyUser } from "../services/auth";
+import { User } from "../models/circleuser";
 
-export const getAllChats: RequestHandler = (req, res, next) => {
-    throw 'Not implemented';
+
+export const getAllChats: RequestHandler = async (req, res, next) => {
+    console.log('this getAllChats api is being called')
+    try {
+        let chats = await Chat.findAll();
+        res.status(200).json(chats)
+    } catch (err) {
+        return res.status(404).json({ message: 'There are no chats!' });
+    }
+
 }
 
-export const getOneChat: RequestHandler = (req, res, next) => {
-    throw 'Not implemented';
+export const getOneChat: RequestHandler = async (req, res, next) => {
+    console.log('this getOneChat api is being called')
+    let itemId = req.params.id;
+    let chat = await Chat.findByPk(itemId);
+    res.status(200).json(chat);
 }
 
-export const createChat: RequestHandler = (req, res, next) => {
-    throw 'Not implemented';
+export const createChat: RequestHandler = async (req, res, next) => {
+    console.log('this createChat api is being called')
+    let user: User | null = await verifyUser(req);
+
+    if(!user) {
+        return res.status(401).send('User is not authenticated');
+    }
+
+    const newChat: Chat = new Chat({
+        chatId: req.body.chatId,
+        userId: user.id,
+        message: req.body.message
+    });
+
+    try {
+        if (newChat.message) {
+            let created = await newChat.save();
+            res.status(201).json(created);
+        }
+        else {
+            console.log(req.body)
+            res.status(400).send('Post cannot be blank!');
+
+        }
+    }
+    catch (err) {
+        res.status(500).send(err);
+    }
 }
 
-export const editChat: RequestHandler = (req, res, next) => {
-    throw 'Not implemented';
+export const editChat: RequestHandler = async (req, res, next) => {
+    
 }
 
 export const deleteChat: RequestHandler = (req, res, next) => {
