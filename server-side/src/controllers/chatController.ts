@@ -26,7 +26,7 @@ export const createChat: RequestHandler = async (req, res, next) => {
     console.log('this createChat api is being called')
     let user: User | null = await verifyUser(req);
 
-    if(!user) {
+    if (!user) {
         return res.status(401).send('User is not authenticated');
     }
 
@@ -53,9 +53,58 @@ export const createChat: RequestHandler = async (req, res, next) => {
 }
 
 export const editChat: RequestHandler = async (req, res, next) => {
-    
-}
+    console.log('this editChat api is being called');
 
-export const deleteChat: RequestHandler = (req, res, next) => {
-    throw 'Not implemented';
+    try {
+        const user: User | null = await verifyUser(req);
+        const { chatId } = req.params;
+
+        if (!user) {
+            return res.status(401).send('User is not authenticated');
+        }
+
+        const chatFound = await Chat.findByPk(chatId);
+
+        if (!chatFound) {
+            return res.status(404).send('Chat not found');
+        }
+
+        const updatedFields = req.body;
+
+        await chatFound.update(updatedFields);
+        res.status(200).json(chatFound);
+
+    } catch (err) {
+        console.error('Error editing chat:', err);
+        res.status(500).send(err);
+    }
+};
+
+export const deleteChat: RequestHandler = async (req, res, next) => {
+    console.log('this deleteChat api is being called');
+
+    try {
+        const user: User | null = await verifyUser(req);
+        let { chatId } = req.params;
+
+        if (!user) {
+            return res.status(401).send('User is not authenticated');
+        }
+
+        let chatFound = await Chat.findByPk(chatId);
+
+        if (chatFound) {
+            await Chat.destroy({
+                where: { chatId: chatId }
+            });
+            res.status(200).json();
+        }
+        else {
+            res.status(404).json();
+        }
+
+    } catch (err){
+        console.error('Error deleting chat:', err);
+        res.status(500).send(err);
+    }
 }

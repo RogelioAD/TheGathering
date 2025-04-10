@@ -4,9 +4,9 @@ import { getAllChats, getOneChat, createChat, editChat, deleteChat } from '../co
 const router = Router();
 
 router.get('/', getAllChats);
-router.get('/:id', getOneChat);
+router.get('/:chatId', getOneChat);
 router.post('/', createChat);
-router.put('/:id', editChat);
-router.delete('/:id', deleteChat);
+router.put('/:chatId', editChat);
+router.delete('/:chatId', deleteChat);
 
 export default router;
