@@ -1,42 +1,26 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
-import { User } from './circleuser';
-import { Group } from './circlegroup';
 
 export class GroupMember extends Model {
-    declare id: number;
-    declare userId: number;
+    declare username: string;
     declare groupId: number;
 }
 
 export function GroupMemberFactory(sequelize: Sequelize) {
     GroupMember.init({
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        },
-        userId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: User,
-                key: "id"
-            },
-            onDelete: "CASCADE"
+        username: {
+            type: DataTypes.STRING,
+            primaryKey: true,
+            allowNull: false
         },
         groupId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: Group,
-                key: "groupId"
-            },
-            onDelete: "CASCADE"
+            primaryKey: true,
+            allowNull: false
         },
     }, {
         freezeTableName: true,
         tableName: 'circlegroupmembers',
         sequelize,
-        timestamps: true
+        timestamps: false
     });
 }

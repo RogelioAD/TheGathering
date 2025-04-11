@@ -1,12 +1,12 @@
-import { DataTypes, InferAttributes, InferCreationAttributes, Model, Sequelize } from "sequelize";
-import { User } from "./circleuser";
-import { Group } from "./circlegroup";
+import { DataTypes, Model, Sequelize } from 'sequelize';
+import { User } from './circleuser'; 
+import { Group } from './circlegroup'; 
 
-export class Chat extends Model<InferAttributes<Chat>, InferCreationAttributes<Chat>> {
-    declare chatId?: number;
-    declare userId: number;
-    declare groupId: number;
+export class Chat extends Model {
+    declare chatId: number;
+    declare username: string;
     declare message: string;
+    declare groupId: number; 
 }
 
 export function ChatFactory(sequelize: Sequelize) {
@@ -17,21 +17,12 @@ export function ChatFactory(sequelize: Sequelize) {
             primaryKey: true,
             allowNull: false
         },
-        userId: {
-            type: DataTypes.INTEGER,
+        username: { 
+            type: DataTypes.STRING,
             allowNull: false,
             references: {
-                model: User,
-                key: "id"
-            },
-            onDelete: "CASCADE"
-        },
-        groupId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: Group,
-                key: "groupId"
+                model: User, 
+                key: 'username'
             },
             onDelete: "CASCADE"
         },
@@ -39,6 +30,15 @@ export function ChatFactory(sequelize: Sequelize) {
             type: DataTypes.TEXT,
             allowNull: false
         },
+        groupId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: Group, 
+                key: 'groupId'
+            },
+            onDelete: "CASCADE"
+        }
     }, {
         freezeTableName: true,
         tableName: 'circlechat',

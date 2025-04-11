@@ -38,7 +38,7 @@ export const createChat: RequestHandler = async (req, res, next) => {
 
     try {
         const newChat = await Chat.create({
-            userId: user.id,
+            username: user.username,
             groupId,
             message
         });

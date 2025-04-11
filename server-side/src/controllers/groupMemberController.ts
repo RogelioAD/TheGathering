@@ -6,14 +6,14 @@ export const addUserToGroup: RequestHandler = async (req, res) => {
     const user = await verifyUser(req);
     if (!user) return res.status(401).send("User not authenticated.");
 
-    const { userId, groupId } = req.body;
+    const { username, groupId } = req.body;
 
-    if (!userId || !groupId) {
-        return res.status(400).json({ message: "userId and groupId are required." });
+    if (!username || !groupId) {
+        return res.status(400).json({ message: "username and groupId are required." });
     }
 
     try {
-        const member = await GroupMember.create({ userId, groupId });
+        const member = await GroupMember.create({ username, groupId });
         res.status(201).json(member);
     } catch (err) {
         console.error("Error adding user to group:", err);
@@ -22,11 +22,11 @@ export const addUserToGroup: RequestHandler = async (req, res) => {
 };
 
 export const removeUserFromGroup: RequestHandler = async (req, res) => {
-    const { userId, groupId } = req.params;
+    const { username, groupId } = req.params;
 
     try {
         const deleted = await GroupMember.destroy({
-            where: { userId, groupId },
+            where: { username, groupId },
         });
 
         if (deleted) res.status(204).send();

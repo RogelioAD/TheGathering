@@ -17,7 +17,7 @@ export const comparePasswords = async (plainTextPassword: string, hashPassword: 
 
 export const signUserToken = async (user: User) => {
     let token = jwt.sign(
-        { userId: user.id },
+        { username: user.username },
         secret,
         { expiresIn: '1hr' }     
     );
@@ -27,18 +27,17 @@ export const signUserToken = async (user: User) => {
 export const verifyUser = async (req: Request) => {
     const authHeader = req.headers.authorization;
 
-    if(authHeader) {
+    if (authHeader) {
         const token = authHeader.split(' ')[1];
 
         try {
-            let decoded: any = await jwt.verify(token, secret);
-            return await User.findByPk(decoded.userId);
-        }
-        catch(err){
+            let decoded: any = jwt.verify(token, secret);
+            return await User.findOne({ where: { username: decoded.username } }); // <-- Add return
+        } catch (err) {
+            console.error("Token verification error:", err); // helpful for debugging
             return null;
         }
-    }
-    else {
+    } else {
         return null;
     }
 }

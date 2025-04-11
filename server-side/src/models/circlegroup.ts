@@ -2,7 +2,7 @@ import { DataTypes, Model, Sequelize } from 'sequelize';
 
 export class Group extends Model {
     declare groupId: number;
-    declare groupName: string;
+    declare groupname: string;
 }
 
 export function GroupFactory(sequelize: Sequelize) {
@@ -10,9 +10,10 @@ export function GroupFactory(sequelize: Sequelize) {
         groupId: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
-            primaryKey: true
+            primaryKey: true,
+            allowNull: false
         },
-        groupName: {
+        groupname: {
             type: DataTypes.STRING,
             allowNull: false
         },

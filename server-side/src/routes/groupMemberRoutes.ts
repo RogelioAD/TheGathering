@@ -5,6 +5,6 @@ const router = Router();
 
 router.post('/', addUserToGroup);
 router.get('/group/:groupId', getUsersInGroup);
-router.delete('/:groupId/user/:userId', removeUserFromGroup);
+router.delete('/:groupId/user/:username', removeUserFromGroup);
 
 export default router;

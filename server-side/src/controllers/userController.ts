@@ -57,10 +57,10 @@ export const loginUser: RequestHandler = async (req, res, next) => {
 
 export const getProfile: RequestHandler = async (req, res, next) => {
     try {
-        const itemId = req.params.id;
+        const username = req.params.username;
 
         const user = await User.findOne({
-            where: { id: itemId }
+            where: { username: username }
         });
 
         if (!user) {

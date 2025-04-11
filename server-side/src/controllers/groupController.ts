@@ -6,11 +6,11 @@ export const createGroup: RequestHandler = async (req, res) => {
     const user = await verifyUser(req);
     if (!user) return res.status(401).send("User not authenticated.");
 
-    const { name } = req.body;
-    if (!name) return res.status(400).json({ message: "Group name is required." });
+    const { groupname } = req.body;
+    if (!groupname) return res.status(400).json({ message: "Group name is required." });
 
     try {
-        const group = await Group.create({ name });
+        const group = await Group.create({ groupname });
         res.status(201).json(group);
     } catch (err) {
         console.error("Error creating group:", err);
