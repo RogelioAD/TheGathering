@@ -1,21 +1,19 @@
-import { DataTypes, InferAttributes, InferCreationAttributes, Model, Sequelize } from "sequelize";
-import { User } from "./circleuser";
-import { Group } from "./circlegroup";
+import { DataTypes, Model, Sequelize } from 'sequelize';
+import { User } from './circleuser';
+import { Group } from './circlegroup';
 
-export class Chat extends Model<InferAttributes<Chat>, InferCreationAttributes<Chat>> {
-    declare chatId?: number;
+export class GroupMember extends Model {
+    declare id: number;
     declare userId: number;
     declare groupId: number;
-    declare message: string;
 }
 
-export function ChatFactory(sequelize: Sequelize) {
-    Chat.init({
-        chatId: {
+export function GroupMemberFactory(sequelize: Sequelize) {
+    GroupMember.init({
+        id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
-            primaryKey: true,
-            allowNull: false
+            primaryKey: true
         },
         userId: {
             type: DataTypes.INTEGER,
@@ -35,13 +33,9 @@ export function ChatFactory(sequelize: Sequelize) {
             },
             onDelete: "CASCADE"
         },
-        message: {
-            type: DataTypes.TEXT,
-            allowNull: false
-        },
     }, {
         freezeTableName: true,
-        tableName: 'circlechat',
+        tableName: 'circlegroupmembers',
         sequelize,
         timestamps: true
     });

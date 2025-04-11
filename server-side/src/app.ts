@@ -4,6 +4,8 @@ import { UserFactory } from './models/circleuser';
 import { ChatFactory } from './models/circlechat';
 import userRoutes from './routes/userRoutes';
 import chatRoutes from './routes/chatRoutes';
+import groupMemberRoutes from './routes/groupMemberRoutes';
+import groupRoutes from './routes/groupRoutes';
 
 const cors = require('cors');
 const corsOptions = {
@@ -23,6 +25,8 @@ ChatFactory(theGatheringdb);
 // Routes
 app.use('/chatapi', chatRoutes);
 app.use('/userapi', userRoutes);
+app.use('/groupsapi', groupRoutes);
+app.use('/groupmembersapi', groupMemberRoutes);
 
 app.get('/test', (req, res) => {
     res.send('Test route works!');

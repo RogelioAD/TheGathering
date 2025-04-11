@@ -1,7 +1,7 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
 export class User extends Model {
-    declare id: number;  // New id field
+    declare id: number;
     declare username: string;
     declare password: string;
     declare firstName: string;
@@ -13,7 +13,7 @@ export function UserFactory(sequelize: Sequelize) {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
-            primaryKey: true, 
+            primaryKey: true,
             allowNull: false
         },
         username: {

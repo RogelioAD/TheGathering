@@ -23,34 +23,33 @@ export const getOneChat: RequestHandler = async (req, res, next) => {
 }
 
 export const createChat: RequestHandler = async (req, res, next) => {
-    console.log('this createChat api is being called')
+    console.log('this createChat api is being called');
     let user: User | null = await verifyUser(req);
 
     if (!user) {
         return res.status(401).send('User is not authenticated');
     }
 
-    const newChat: Chat = new Chat({
-        chatId: req.body.chatId,
-        userId: user.id,
-        message: req.body.message
-    });
+    const { groupId, message } = req.body;
+
+    if (!groupId || !message) {
+        return res.status(400).json({ message: 'Group ID and message are required.' });
+    }
 
     try {
-        if (newChat.message) {
-            let created = await newChat.save();
-            res.status(201).json(created);
-        }
-        else {
-            console.log(req.body)
-            res.status(400).send('Post cannot be blank!');
+        const newChat = await Chat.create({
+            userId: user.id,
+            groupId,
+            message
+        });
 
-        }
-    }
-    catch (err) {
+        res.status(201).json(newChat);
+    } catch (err) {
+        console.error('Error creating chat:', err);
         res.status(500).send(err);
     }
-}
+};
+
 
 export const editChat: RequestHandler = async (req, res, next) => {
     console.log('this editChat api is being called');
@@ -108,3 +107,15 @@ export const deleteChat: RequestHandler = async (req, res, next) => {
         res.status(500).send(err);
     }
 }
+
+export const getChatsByGroup: RequestHandler = async (req, res) => {
+    const { groupId } = req.params;
+
+    try {
+        const chats = await Chat.findAll({ where: { groupId } });
+        res.status(200).json(chats);
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching group chats', error: err });
+    }
+};
+
