@@ -17,8 +17,8 @@ export const getAllChats: RequestHandler = async (req, res, next) => {
 
 export const getOneChat: RequestHandler = async (req, res, next) => {
     console.log('this getOneChat api is being called')
-    let itemId = req.params.id;
-    let chat = await Chat.findByPk(itemId);
+    let {chatId} = req.params;
+    let chat = await Chat.findByPk(chatId);
     res.status(200).json(chat);
 }
 

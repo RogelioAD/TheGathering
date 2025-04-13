@@ -44,7 +44,7 @@ export const deleteGroup: RequestHandler = async (req, res) => {
     const { groupId } = req.params;
 
     try {
-        const deleted = await Group.destroy({ where: { id: groupId } });
+        const deleted = await Group.destroy({ where: { groupId: groupId } });
         if (deleted) res.status(204).send();
         else res.status(404).send("Group not found.");
     } catch (err) {

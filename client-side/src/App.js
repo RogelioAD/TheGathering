@@ -1,10 +1,19 @@
 import React from "react";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
+import Register from "./components/Register";
+
+import { UserProvider } from "./context/Provider/UserProvider";
 
 function App() {
   return (
-    <div className="app">
-      <h1>Hello World!</h1>
-    </div>
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<Register />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 
