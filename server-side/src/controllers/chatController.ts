@@ -2,7 +2,34 @@ import { RequestHandler } from "express";
 import { Chat } from "../models/circlechat";
 import { verifyUser } from "../services/auth";
 import { User } from "../models/circleuser";
+import { getRandomVerse } from "../services/verseService";
 
+export async function postDailyVerse(groupId: number) {
+    try {
+        const verse: any = await getRandomVerse();
+
+        console.log("Fetched verse:", verse);
+
+        if (!verse || !verse.payload || !verse.payload.book || !verse.payload.chapter || !verse.payload.verse || !verse.payload.text) {
+            throw new Error("Verse data is invalid.");
+        }
+
+        const reference = `${verse.payload.book.name} ${verse.payload.chapter}:${verse.payload.verse}`;
+
+        const message = {
+            username: 'System',  
+            message: `${reference}: "${verse.payload.text}"`, 
+            groupId,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
+
+        await Chat.create(message);  
+        console.log(`Posted daily verse to group ${groupId}`);
+    } catch (err) {
+        console.error("Failed to post daily verse:", err);
+    }
+}
 
 export const getAllChats: RequestHandler = async (req, res, next) => {
     console.log('this getAllChats api is being called')
@@ -17,7 +44,7 @@ export const getAllChats: RequestHandler = async (req, res, next) => {
 
 export const getOneChat: RequestHandler = async (req, res, next) => {
     console.log('this getOneChat api is being called')
-    let {chatId} = req.params;
+    let { chatId } = req.params;
     let chat = await Chat.findByPk(chatId);
     res.status(200).json(chat);
 }
@@ -102,7 +129,7 @@ export const deleteChat: RequestHandler = async (req, res, next) => {
             res.status(404).json();
         }
 
-    } catch (err){
+    } catch (err) {
         console.error('Error deleting chat:', err);
         res.status(500).send(err);
     }
@@ -119,3 +146,18 @@ export const getChatsByGroup: RequestHandler = async (req, res) => {
     }
 };
 
+export const testPostDailyVerse: RequestHandler = async (req, res) => {
+    try {
+        const groupId = Number(req.params.groupId);
+
+        if (isNaN(groupId)) {
+            return res.status(400).json({ message: "Invalid groupId" });
+        }
+
+        await postDailyVerse(groupId);
+        res.status(200).json({ message: `Verse posted to group ${groupId}` });
+    } catch (error) {
+        console.error("Error posting test verse:", error);
+        res.status(500).json({ message: "Error posting verse" });
+    }
+};

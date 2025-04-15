@@ -20,11 +20,11 @@ export function ChatFactory(sequelize: Sequelize) {
         username: { 
             type: DataTypes.STRING,
             allowNull: false,
-            references: {
-                model: User, 
-                key: 'username'
-            },
-            onDelete: "CASCADE"
+            // references: {
+            //     model: User, 
+            //     key: 'username'
+            // },
+            // onDelete: "CASCADE"
         },
         message: {
             type: DataTypes.TEXT,
