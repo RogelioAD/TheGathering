@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../context/Context/UserContext";
+import UserContext from "../conpro/Context/UserContext";
 
 const Register = () => {
   let [user, setUser] = useState({
@@ -25,7 +25,7 @@ const Register = () => {
       .then(() => {
         navigate("/login");
       })
-      .catch((error) => {
+      .catch(() => {
         window.alert("Failed registration: error creating user");
       });
   }

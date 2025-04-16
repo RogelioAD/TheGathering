@@ -1,8 +1,9 @@
 import React from "react";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Register from "./components/Register";
-
-import { UserProvider } from "./context/Provider/UserProvider";
+import Login from "./components/Login";
+import Profile from "./components/Profile";
+import { UserProvider } from "./conpro/Provider/UserProvider";
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Register />} />
-          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile/:username" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>

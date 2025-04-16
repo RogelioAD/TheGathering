@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import UserContext from "../Context/UserContext";
 
+
 export const UserProvider = (props) => {
   const [user, setUser] = useState("");
   const baseUrl = "http://localhost:5000/userapi/";
@@ -15,22 +16,20 @@ export const UserProvider = (props) => {
     }
   }
 
-  function createUser(userInfo) {
+  async function createUser(userInfo) {
     console.log(userInfo); //testing
 
-    return axios.post(baseUrl, userInfo).then((response) => {
-      return new Promise((resolve) => resolve(response.data));
-    });
+    const response = await axios.post(baseUrl, userInfo);
+    return await new Promise((resolve) => resolve(response.data));
   }
 
-  function loginUser(username, password) {
+  async function loginUser(username, password) {
     let user = { username, password };
     console.log(user); //testing
 
-    return axios.post(`${baseUrl}login`, user).then((response) => {
-      localStorage.setItem("authToken", response.data.token);
-      return new Promise((resolve) => resolve(response.data));
-    });
+    const response = await axios.post(`${baseUrl}login`, user);
+    localStorage.setItem("authToken", response.data.token);
+    return await new Promise((resolve) => resolve(response.data));
   }
 
   return (
