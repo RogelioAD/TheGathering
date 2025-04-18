@@ -15,10 +15,14 @@ GroupFactory(theGatheringdb);
 ChatFactory(theGatheringdb);
 GroupMemberFactory(theGatheringdb);
 
+User.hasMany(Group, { foreignKey: 'createdBy' });
+Group.belongsTo(User, { foreignKey: 'createdBy' });
+
 User.hasMany(Chat, { foreignKey: 'userId' });
 Chat.belongsTo(User, { foreignKey: 'userId' });
 
-Group.belongsToMany(User, { through: GroupMember, foreignKey: 'groupId' });
-User.belongsToMany(Group, { through: GroupMember, foreignKey: 'userId' });
+Group.hasMany(GroupMember, { foreignKey: 'groupId' });
+GroupMember.belongsTo(Group, { foreignKey: 'groupId' });
+
 
 export { theGatheringdb, User, Chat, Group, GroupMember };

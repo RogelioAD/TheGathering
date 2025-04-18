@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import { Group } from '../models/circlegroup';
 import { verifyUser } from '../services/auth';
+import { GroupMember } from '../models/circlegroupmembers';
 
 export const createGroup: RequestHandler = async (req, res) => {
     const user = await verifyUser(req);
@@ -10,13 +11,54 @@ export const createGroup: RequestHandler = async (req, res) => {
     if (!groupname) return res.status(400).json({ message: "Group name is required." });
 
     try {
-        const group = await Group.create({ groupname });
-        res.status(201).json(group);
+        const group = await Group.create({
+            groupname,
+            createdBy: user.username
+        });
+
+        res.status(201).json({
+            message: "Group created successfully.",
+            group
+        });
     } catch (err) {
         console.error("Error creating group:", err);
+        res.status(500).send({ message: "Internal server error.", error: err });
+    }
+};
+
+export const getGroupsCreatedByUser: RequestHandler = async (req, res) => {
+    const { username } = req.params;
+    try {
+        const groups = await Group.findAll({ where: { createdBy: username } });
+        res.status(200).json(groups);
+    } catch (err) {
+        console.error("Error fetching created groups:", err);
         res.status(500).send(err);
     }
 };
+
+export const getGroupsUserIsIn: RequestHandler = async (req, res) => {
+    const { username } = req.params;
+  
+    try {
+      const memberships = await GroupMember.findAll({
+        where: { username },
+        include: [{ model: Group, as: 'Group' }], 
+      });
+  
+      const groups = memberships.map((chat) => chat.Group); 
+  
+      res.status(200).json(groups); 
+    } catch (err) {
+      console.error("Error fetching user's groups:", err);
+      res.status(500).send(err);
+    }
+  };
+  
+  
+  
+
+
 
 export const getAllGroups: RequestHandler = async (req, res) => {
     try {

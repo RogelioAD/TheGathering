@@ -1,5 +1,4 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
-import { User } from './circleuser'; 
 import { Group } from './circlegroup'; 
 
 export class Chat extends Model {
@@ -20,11 +19,6 @@ export function ChatFactory(sequelize: Sequelize) {
         username: { 
             type: DataTypes.STRING,
             allowNull: false,
-            // references: {
-            //     model: User, 
-            //     key: 'username'
-            // },
-            // onDelete: "CASCADE"
         },
         message: {
             type: DataTypes.TEXT,
