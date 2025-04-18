@@ -21,6 +21,10 @@ const Login = () => {
       });
   }
 
+  function handleRegister(){
+    navigate("/register")
+  }
+
   return (
     <form className="input regfont" onSubmit={handleSubmit}>
       <h1>LOGIN</h1>
@@ -43,6 +47,7 @@ const Login = () => {
       <br />
       <br></br>
       <button>Sign In</button>
+      <button type="button" onClick={handleRegister}>Register</button>
     </form>
   );
 };

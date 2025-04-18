@@ -12,8 +12,8 @@ function App() {
       <GroupProvider>
         <BrowserRouter>
           <Routes>
-            <Route exact path="/" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+            <Route exact path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/profile/:username" element={<Profile />} />
           </Routes>
         </BrowserRouter>

@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 import UserContext from "../Context/UserContext";
 
-
 export const UserProvider = (props) => {
   const [user, setUser] = useState("");
   const baseUrl = "http://localhost:5000/userapi/";
@@ -25,11 +24,22 @@ export const UserProvider = (props) => {
 
   async function loginUser(username, password) {
     let user = { username, password };
-    console.log(user); //testing
+    console.log(user); // testing
 
-    const response = await axios.post(`${baseUrl}login`, user);
-    localStorage.setItem("authToken", response.data.token);
-    return await new Promise((resolve) => resolve(response.data));
+    try {
+      const response = await axios.post(`${baseUrl}login`, user);
+
+      if (response.data.token) {
+        localStorage.setItem("authToken", response.data.token); 
+        console.log("Login successful, token saved to localStorage");
+        return response.data; 
+      } else {
+        throw new Error("No token returned from the server.");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error.message);
+      throw error;
+    }
   }
 
   return (

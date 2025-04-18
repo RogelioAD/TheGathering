@@ -32,9 +32,9 @@ export const verifyUser = async (req: Request) => {
 
         try {
             let decoded: any = jwt.verify(token, secret);
-            return await User.findOne({ where: { username: decoded.username } }); // <-- Add return
+            return await User.findOne({ where: { username: decoded.username } });
         } catch (err) {
-            console.error("Token verification error:", err); // helpful for debugging
+            console.error("Token verification error:", err);
             return null;
         }
     } else {
