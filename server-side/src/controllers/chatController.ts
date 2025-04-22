@@ -4,30 +4,37 @@ import { verifyUser } from "../services/auth";
 import { User } from "../models/circleuser";
 import { getRandomVerse } from "../services/verseService";
 
-export async function postDailyVerse(groupId: number) {
+export const postDailyVerse: RequestHandler = async (req, res) => {
+    const groupId = parseInt(req.params.groupId, 10);
+    if (isNaN(groupId)) {
+        return res.status(400).json({ error: 'Invalid groupId' });
+    }
+
     try {
         const verse: any = await getRandomVerse();
-
         console.log("Fetched verse:", verse);
 
-        if (!verse || !verse.payload || !verse.payload.book || !verse.payload.chapter || !verse.payload.verse || !verse.payload.text) {
+        if (!verse?.payload?.book?.name || !verse.payload.chapter || !verse.payload.verse || !verse.payload.text) {
             throw new Error("Verse data is invalid.");
         }
 
         const reference = `${verse.payload.book.name} ${verse.payload.chapter}:${verse.payload.verse}`;
 
         const message = {
-            username: 'System',  
-            message: `${reference}: "${verse.payload.text}"`, 
+            username: 'System',
+            message: `${reference}: "${verse.payload.text}"`,
             groupId,
             createdAt: new Date(),
             updatedAt: new Date(),
         };
 
-        await Chat.create(message);  
+        await Chat.create(message);
         console.log(`Posted daily verse to group ${groupId}`);
+
+        res.status(200).json({ success: true, verse });
     } catch (err) {
         console.error("Failed to post daily verse:", err);
+        res.status(500).json({ error: 'Failed to post daily verse' });
     }
 }
 
@@ -146,18 +153,3 @@ export const getChatsByGroup: RequestHandler = async (req, res) => {
     }
 };
 
-export const testPostDailyVerse: RequestHandler = async (req, res) => {
-    try {
-        const groupId = Number(req.params.groupId);
-
-        if (isNaN(groupId)) {
-            return res.status(400).json({ message: "Invalid groupId" });
-        }
-
-        await postDailyVerse(groupId);
-        res.status(200).json({ message: `Verse posted to group ${groupId}` });
-    } catch (error) {
-        console.error("Error posting test verse:", error);
-        res.status(500).json({ message: "Error posting verse" });
-    }
-};

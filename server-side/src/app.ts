@@ -29,7 +29,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(404).end();
 });
 
-theGatheringdb.sync()
+theGatheringdb.sync({alter:true})
     .then(() => {
         console.info("Connected to the theGatheringdb and synced models!");
     })

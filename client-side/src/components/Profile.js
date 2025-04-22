@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import GroupContext from "../conpro/Context/GroupContext";
 
 const Profile = () => {
-  const { user } = useContext(UserContext);
+  const { user, getProfile } = useContext(UserContext);
   const {
     createGroup,
     joinedGroups,
@@ -19,18 +19,20 @@ const Profile = () => {
   let { username } = useParams();
 
   useEffect(() => {
-    console.log(username); //test
+    console.log("params are: " + username); //test
+    getProfile(username);
     getGroupsCreatedByUser(username);
     getGroupsUserIsIn(username);
   }, [username]);
 
   function handleSubmitGroup(event) {
-    console.log('New group created!') //test
+    console.log("New group created!"); //test
     event.preventDefault();
     if (newGroupName.trim()) {
       createGroup(newGroupName);
       setNewGroupName("");
       setShowGroupForm(false);
+      
     }
   }
 

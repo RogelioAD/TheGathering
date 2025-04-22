@@ -9,7 +9,7 @@ export const GroupProvider = (props) => {
   const baseUrl = "http://localhost:5000/groupsapi/";
 
   async function getGroupsCreatedByUser(username) {
-    console.log(username); //test
+    console.log("object passed from profile to group provider is: " + username); //test
     try {
       const response = await axios.get(`${baseUrl}created/${username}`);
       setCreatedGroups(response.data);
