@@ -18,17 +18,17 @@ export const postDailyVerse: RequestHandler = async (req, res) => {
             throw new Error("Verse data is invalid.");
         }
 
-        const reference = `${verse.payload.book.name} ${verse.payload.chapter}:${verse.payload.verse}`;
+        // const reference = `${verse.payload.book.name} ${verse.payload.chapter}:${verse.payload.verse}`;
 
-        const message = {
-            username: 'System',
-            message: `${reference}: "${verse.payload.text}"`,
-            groupId,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        };
+        // const message = {
+        //     username: 'System',
+        //     message: `${reference}: "${verse.payload.text}"`,
+        //     groupId,
+        //     createdAt: new Date(),
+        //     updatedAt: new Date(),
+        // };
 
-        await Chat.create(message);
+        // await Chat.create(message);
         console.log(`Posted daily verse to group ${groupId}`);
 
         res.status(200).json({ success: true, verse });
@@ -149,7 +149,19 @@ export const getChatsByGroup: RequestHandler = async (req, res) => {
         const chats = await Chat.findAll({ where: { groupId } });
         res.status(200).json(chats);
     } catch (err) {
-        res.status(500).json({ message: 'Error fetching group chats', error: err });
+        res.status(500).json({ message: 'Error fetching chats by group', error: err });
+    }
+};
+
+export const deleteChatsByGroup: RequestHandler = async (req, res) => {
+    const { groupId } = req.params;
+
+    try {
+        console.log("chats destroyed in group")
+        const chats = await Chat.destroy({ where: { groupId } });
+        res.status(200).json(chats);
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching delete chats in group', error: err });
     }
 };
 
