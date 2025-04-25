@@ -30,7 +30,6 @@ export const UserProvider = (props) => {
   }
 
   async function createUser(userInfo) {
-    console.log(userInfo); //testing
 
     const response = await axios.post(baseUrl, userInfo);
     return await new Promise((resolve) => resolve(response.data));

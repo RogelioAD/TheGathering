@@ -1,12 +1,17 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import GroupContext from "../Context/GroupContext";
+import UserContext from "../Context/UserContext";
 
 export const GroupProvider = (props) => {
   const [group, setGroup] = useState("");
+  const [groupInfo, setGroupInfo] = useState(null);
   const [createdGroups, setCreatedGroups] = useState([]);
   const [joinedGroups, setJoinedGroups] = useState([]);
   const baseUrl = "http://localhost:5000/groupsapi/";
+  const baseGroupUrl = "http://localhost:5000/groupmembersapi/";
+
+  const { getProfile } = useContext(UserContext);
 
   async function getGroupsCreatedByUser(username) {
     console.log("object passed from profile to group provider is: " + username); //test
@@ -49,12 +54,56 @@ export const GroupProvider = (props) => {
     }
   }
 
+  async function addUserToGroup(username, groupId) {
+    try {
+      let findUser = await getProfile(username);
+
+      if (
+        findUser &&
+        username.toLowerCase() === findUser.username.toLowerCase()
+      ) {
+        const token = localStorage.getItem("authToken");
+
+        await axios.post(
+          `${baseGroupUrl}`,
+          { username, groupId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        return true;
+      } else {
+        console.log(`User not found or invalid username: ${username}`);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error joining groups:", error);
+      return false;
+    }
+  }
+
+  async function getGroupInfoById(groupId) {
+    try {
+      const res = await axios.get(`${baseUrl}group/${groupId}`);
+      setGroupInfo(res.data);
+      return res.data;
+    } catch (err) {
+      console.error("Error fetching group info:", err);
+      return null;
+    }
+  }
+
   return (
     <GroupContext.Provider
       value={{
         getGroupsCreatedByUser,
         getGroupsUserIsIn,
         createGroup,
+        addUserToGroup,
+        getGroupInfoById,
         group,
         createdGroups,
         joinedGroups,

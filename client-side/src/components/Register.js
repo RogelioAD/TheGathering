@@ -23,7 +23,7 @@ const Register = () => {
 
     createUser(user)
       .then(() => {
-        navigate("/login");
+        navigate("/");
       })
       .catch(() => {
         window.alert("Failed registration: error creating user");
@@ -37,7 +37,7 @@ const Register = () => {
       <br></br>
       <span>Username </span>
       <input
-        placeholder="Enter Email"
+        placeholder="Enter Username"
         type="text"
         name="username"
         value={user.username}

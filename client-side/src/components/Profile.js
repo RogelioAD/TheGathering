@@ -32,8 +32,11 @@ const Profile = () => {
       createGroup(newGroupName);
       setNewGroupName("");
       setShowGroupForm(false);
-      
     }
+  }
+
+  function editSubmit(event){
+    event.preventDefault()
   }
 
   return (
@@ -46,14 +49,21 @@ const Profile = () => {
 
       <div>
         <h3>Current Groupchats:</h3>
-        {joinedGroups.length > 0 ? (
-          joinedGroups.map((group, i) => (
-            <p key={i}>
-              <Link to={`group/${group.groupId}`}>{group.groupname}</Link>
-            </p>
-          ))
+        {joinedGroups.length > 0 || createdGroups.length > 0 ? (
+          <>
+            {joinedGroups.map((group, i) => (
+              <p key={`joined-${i}`}>
+                <Link to={`group/${group.groupId}`}>{group.groupname}</Link>
+              </p>
+            ))}
+            {createdGroups.map((group, i) => (
+              <p key={`created-${i}`}>
+                <Link to={`group/${group.groupId}`}>{group.groupname}</Link>
+              </p>
+            ))}
+          </>
         ) : (
-          <Link to={``}>Click to join group</Link>
+          <p>Ask your friends to join!</p>
         )}
       </div>
 
@@ -62,11 +72,11 @@ const Profile = () => {
         {createdGroups.length > 0 ? (
           createdGroups.map((group, i) => (
             <p key={i}>
-              <Link to={`group/${group.groupId}`}>{group.groupname}</Link>
+              <Link to={`group/${group.groupId}`}>{group.groupname}</Link><> </><button onClick={editSubmit}>Edit</button>
             </p>
           ))
         ) : (
-          <Link to={``}>Click to create group</Link>
+          <p>Try creating one!</p>
         )}
       </div>
 

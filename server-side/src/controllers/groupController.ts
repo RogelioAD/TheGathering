@@ -54,11 +54,6 @@ export const getGroupsUserIsIn: RequestHandler = async (req, res) => {
       res.status(500).send(err);
     }
   };
-  
-  
-  
-
-
 
 export const getAllGroups: RequestHandler = async (req, res) => {
     try {
