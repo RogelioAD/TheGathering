@@ -27,8 +27,7 @@ const ChatContent = () => {
     }
   }, [groupId, user.username]);
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit() {
     if (message.trim()) {
       createChat(groupId, message.trim());
       setMessage("");
