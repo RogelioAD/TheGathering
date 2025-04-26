@@ -8,15 +8,12 @@ import GroupContext from "../conpro/Context/GroupContext";
 const ChatContent = () => {
   const [message, setMessage] = useState("");
   const [isCreator, setIsCreator] = useState(false);
-  const [showGroupForm, setShowGroupForm] = useState(false);
-  const [newUser, setNewUser] = useState("");
 
   const { user } = useContext(UserContext);
-  const { verse, loading, chats, getChatsByGroup, createChat } =
-    useContext(ChatContext);
+  const { verse, loading, chats, getChatsByGroup, createChat } = useContext(ChatContext);
   const { getGroupInfoById, addUserToGroup } = useContext(GroupContext);
 
-  let { groupId } = useParams();
+  const { groupId } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,24 +27,21 @@ const ChatContent = () => {
     }
   }, [groupId, user.username]);
 
-  function handleSubmit() {
-    // e.preventDefault(); turned off so chat will instantly rerender after comment
+  function handleSubmit(e) {
+    e.preventDefault();
     if (message.trim()) {
-      createChat(groupId, message);
+      createChat(groupId, message.trim());
       setMessage("");
-      console.log("button works");
     }
   }
 
-  async function inviteSubmit() {
-    const addedUser = newUser.trim();
+  async function handleInvite() {
+    const usernameToInvite = prompt("Enter the username you want to invite (case-sensitive):");
 
-    if (addedUser && addedUser !== user.username) {
+    if (usernameToInvite && usernameToInvite.trim() && usernameToInvite.trim() !== user.username) {
       try {
-        await addUserToGroup(addedUser, groupId);
-        await createChat(groupId, `${addedUser} has joined the chat`);
-        setShowGroupForm(false);
-        setNewUser("");
+        await addUserToGroup(usernameToInvite.trim(), groupId);
+        await createChat(groupId, `${usernameToInvite.trim()} has joined the chat`);
       } catch (err) {
         console.error("Invite failed:", err);
       }
@@ -58,28 +52,9 @@ const ChatContent = () => {
     <>
       <div>
         {isCreator && (
-          <div>
-            <button
-              type="button"
-              onClick={() => setShowGroupForm(!showGroupForm)}
-            >
-              {showGroupForm ? "Cancel" : "Invite"}
-            </button>
-
-            {showGroupForm && (
-              <form className="input regfont" onSubmit={inviteSubmit}>
-                <span>Enter Username</span>
-                <input
-                  placeholder="Be careful case sensitive!"
-                  type="text"
-                  name="groupName"
-                  value={newUser}
-                  onChange={(e) => setNewUser(e.target.value)}
-                />
-                <button type="submit">Submit</button>
-              </form>
-            )}
-          </div>
+          <button type="button" onClick={handleInvite}>
+            Invite
+          </button>
         )}
       </div>
 
@@ -124,11 +99,10 @@ const ChatContent = () => {
           <input
             placeholder="Type your message..."
             type="text"
-            name="username"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <button>Share</button>
+          <button type="submit">Share</button>
         </form>
       </div>
     </>

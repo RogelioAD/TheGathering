@@ -96,6 +96,23 @@ export const GroupProvider = (props) => {
     }
   }
 
+  async function editGroupName(groupId, groupname) {
+    const token = localStorage.getItem("authToken");
+
+    try {
+      const res = await axios.put(`${baseUrl}group/${groupId}`, { groupname },  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res.data)
+      return res.data;
+    } catch (err) {
+      console.error("Error editing group name:", err);
+      return null;
+    }
+  }
+
   return (
     <GroupContext.Provider
       value={{
@@ -104,6 +121,7 @@ export const GroupProvider = (props) => {
         createGroup,
         addUserToGroup,
         getGroupInfoById,
+        editGroupName,
         group,
         createdGroups,
         joinedGroups,

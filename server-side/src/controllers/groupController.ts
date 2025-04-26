@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import { Group } from '../models/circlegroup';
 import { verifyUser } from '../services/auth';
 import { GroupMember } from '../models/circlegroupmembers';
+import { User } from '../models/circleuser';
 
 export const createGroup: RequestHandler = async (req, res) => {
     const user = await verifyUser(req);
@@ -23,6 +24,34 @@ export const createGroup: RequestHandler = async (req, res) => {
     } catch (err) {
         console.error("Error creating group:", err);
         res.status(500).send({ message: "Internal server error.", error: err });
+    }
+};
+
+export const editGroupName: RequestHandler = async (req, res, next) => {
+    console.log('this editGroupName api is being called');
+
+    try {
+        const user: User | null = await verifyUser(req);
+        const { groupId } = req.params;
+
+        if (!user) {
+            return res.status(401).send('User is not authenticated');
+        }
+
+        const foundGroup = await Group.findByPk(groupId);
+
+        if (!foundGroup) {
+            return res.status(404).send('Group not found');
+        }
+
+        const updatedFields = req.body;
+
+        await foundGroup.update(updatedFields);
+        res.status(200).json(foundGroup);
+
+    } catch (err) {
+        console.error('Error editing groupName:', err);
+        res.status(500).send(err);
     }
 };
 

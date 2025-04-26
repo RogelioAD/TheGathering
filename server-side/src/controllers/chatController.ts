@@ -17,18 +17,6 @@ export const postDailyVerse: RequestHandler = async (req, res) => {
         if (!verse?.payload?.book?.name || !verse.payload.chapter || !verse.payload.verse || !verse.payload.text) {
             throw new Error("Verse data is invalid.");
         }
-
-        // const reference = `${verse.payload.book.name} ${verse.payload.chapter}:${verse.payload.verse}`;
-
-        // const message = {
-        //     username: 'System',
-        //     message: `${reference}: "${verse.payload.text}"`,
-        //     groupId,
-        //     createdAt: new Date(),
-        //     updatedAt: new Date(),
-        // };
-
-        // await Chat.create(message);
         console.log(`Posted daily verse to group ${groupId}`);
 
         res.status(200).json({ success: true, verse });
