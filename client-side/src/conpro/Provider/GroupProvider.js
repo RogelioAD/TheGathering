@@ -57,7 +57,7 @@ export const GroupProvider = (props) => {
   async function addUserToGroup(username, groupId) {
     try {
       let findUser = await getProfile(username);
-
+      console.log({findUser})
       if (
         findUser &&
         username.toLowerCase() === findUser.username.toLowerCase()

@@ -23,11 +23,13 @@ export const UserProvider = (props) => {
   async function getProfile(username) {
     try {
       const response = await axios.get(`${baseUrl}profile/${username}`);
-      setUser(response.data);
+      return response.data; 
     } catch (error) {
       console.error("Error fetching User:", error);
+      return null;
     }
   }
+  
 
   async function createUser(userInfo) {
 

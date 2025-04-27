@@ -39,11 +39,12 @@ const ChatContent = () => {
     e.preventDefault()
 
     const usernameToInvite = prompt("Enter the username you want to invite (case-sensitive):");
-
-    if (usernameToInvite && usernameToInvite.trim() && usernameToInvite.trim() !== user.username) {
+    console.log(usernameToInvite)
+    if (usernameToInvite && usernameToInvite !== user.username) {
       try {
-        await addUserToGroup(usernameToInvite.trim(), groupId);
-        await createChat(groupId, `${usernameToInvite.trim()} has joined the chat`);
+        console.log(usernameToInvite)
+        await addUserToGroup(usernameToInvite, groupId);
+        await createChat(groupId, `${usernameToInvite} has joined the chat`);
       } catch (err) {
         console.error("Invite failed:", err);
       }
