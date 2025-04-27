@@ -27,14 +27,17 @@ const ChatContent = () => {
     }
   }, [groupId, user.username]);
 
-  function handleSubmit() {
+  function handleSubmit(e) {
+    e.preventDefault()
     if (message.trim()) {
       createChat(groupId, message.trim());
       setMessage("");
     }
   }
 
-  async function handleInvite() {
+  async function handleInvite(e) {
+    e.preventDefault()
+
     const usernameToInvite = prompt("Enter the username you want to invite (case-sensitive):");
 
     if (usernameToInvite && usernameToInvite.trim() && usernameToInvite.trim() !== user.username) {
