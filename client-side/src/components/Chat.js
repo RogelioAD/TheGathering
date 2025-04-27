@@ -19,6 +19,7 @@ const ChatContent = () => {
     const fetchData = async () => {
       const info = await getGroupInfoById(groupId);
       setIsCreator(info?.createdBy === user.username);
+      console.log(info)
     };
 
     if (groupId) {
@@ -27,13 +28,15 @@ const ChatContent = () => {
     }
   }, [groupId, user.username]);
 
-  function handleSubmit(e) {
-    e.preventDefault()
+  async function handleSubmit(e) {
+    e.preventDefault();
     if (message.trim()) {
-      createChat(groupId, message.trim());
+      await createChat(groupId, message.trim());
       setMessage("");
+      getChatsByGroup(groupId);
     }
   }
+  
 
   async function handleInvite(e) {
     e.preventDefault()
@@ -49,6 +52,8 @@ const ChatContent = () => {
         console.error("Invite failed:", err);
       }
     }
+    getChatsByGroup(groupId);
+
   }
 
   return (

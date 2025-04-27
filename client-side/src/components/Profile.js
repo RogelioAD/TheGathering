@@ -12,6 +12,7 @@ const Profile = () => {
     getGroupsCreatedByUser,
     getGroupsUserIsIn,
     editGroupName,
+    deleteGroup
   } = useContext(GroupContext);
 
   const { username } = useParams();
@@ -43,6 +44,13 @@ const Profile = () => {
       }
     }
   }
+
+  async function handleDelete(groupId) {
+    await deleteGroup(groupId);
+    getGroupsCreatedByUser(username);
+    getGroupsUserIsIn(username);
+  }
+  
 
   return (
     <>
@@ -81,6 +89,9 @@ const Profile = () => {
               <> </>
               <button onClick={() => editSubmit(group.groupId, group.groupname)}>
                 Edit
+              </button>
+              <button onClick={() => handleDelete(group.groupId)}>
+                Delete
               </button>
             </p>
           ))

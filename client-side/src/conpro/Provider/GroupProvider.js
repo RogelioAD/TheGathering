@@ -57,7 +57,7 @@ export const GroupProvider = (props) => {
   async function addUserToGroup(username, groupId) {
     try {
       let findUser = await getProfile(username);
-      console.log({findUser})
+      console.log({ findUser });
       if (
         findUser &&
         username.toLowerCase() === findUser.username.toLowerCase()
@@ -100,16 +100,34 @@ export const GroupProvider = (props) => {
     const token = localStorage.getItem("authToken");
 
     try {
-      const res = await axios.put(`${baseUrl}group/${groupId}`, { groupname },  {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(res.data)
+      const res = await axios.put(
+        `${baseUrl}group/${groupId}`,
+        { groupname },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(res.data);
       return res.data;
     } catch (err) {
       console.error("Error editing group name:", err);
       return null;
+    }
+  }
+
+  async function deleteGroup(groupId) {
+    const token = localStorage.getItem("authToken");
+
+    try {
+      const res = await axios.delete(`${baseUrl}group/${groupId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (err) {
+      console.error("Error editing group name:", err);
     }
   }
 
@@ -122,6 +140,7 @@ export const GroupProvider = (props) => {
         addUserToGroup,
         getGroupInfoById,
         editGroupName,
+        deleteGroup,
         group,
         createdGroups,
         joinedGroups,
