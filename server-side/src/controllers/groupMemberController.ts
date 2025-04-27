@@ -38,7 +38,7 @@ export const removeUserFromGroup: RequestHandler = async (req, res) => {
 
 export const getUsersInGroup: RequestHandler = async (req, res) => {
     const { groupId } = req.params;
-
+    console.log("this getUsersInGroup is being called")
     try {
         const members = await GroupMember.findAll({
             where: { groupId },

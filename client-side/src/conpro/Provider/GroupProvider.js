@@ -96,6 +96,28 @@ export const GroupProvider = (props) => {
     }
   }
 
+  async function getUsersInGroup(groupId) {
+    console.log("GetusersInGroup is being called")
+    try {
+      const res = await axios.get(`${baseGroupUrl}group/${groupId}`);
+      return res.data;
+    } catch (err) {
+      console.error("Error fetching group info:", err);
+      return null;
+    }
+  }
+
+  async function removeUserFromGroup(username, groupId) {
+    console.log("removeUser is being called")
+    try {
+      const res = await axios.delete(`${baseGroupUrl}${groupId}/user/${username}`);
+      return res.data;
+    } catch (err) {
+      console.error("Error fetching removeUser:", err);
+      return null;
+    }
+  }
+
   async function editGroupName(groupId, groupname) {
     const token = localStorage.getItem("authToken");
 
@@ -141,6 +163,8 @@ export const GroupProvider = (props) => {
         getGroupInfoById,
         editGroupName,
         deleteGroup,
+        getUsersInGroup,
+        removeUserFromGroup,
         group,
         createdGroups,
         joinedGroups,

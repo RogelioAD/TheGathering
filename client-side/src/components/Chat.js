@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import ChatContext from "../conpro/Context/ChatContext";
 import { ChatProvider } from "../conpro/Provider/ChatProvider";
 import UserContext from "../conpro/Context/UserContext";
@@ -8,10 +8,18 @@ import GroupContext from "../conpro/Context/GroupContext";
 const ChatContent = () => {
   const [message, setMessage] = useState("");
   const [isCreator, setIsCreator] = useState(false);
+  const [groupMembers, setGroupMembers] = useState([]);
+  const [showMembers, setShowMembers] = useState(false);
 
   const { user } = useContext(UserContext);
-  const { verse, loading, chats, getChatsByGroup, createChat } = useContext(ChatContext);
-  const { getGroupInfoById, addUserToGroup } = useContext(GroupContext);
+  const { verse, loading, chats, getChatsByGroup, createChat } =
+    useContext(ChatContext);
+  const {
+    getGroupInfoById,
+    addUserToGroup,
+    getUsersInGroup,
+    removeUserFromGroup,
+  } = useContext(GroupContext);
 
   const { groupId } = useParams();
 
@@ -19,7 +27,6 @@ const ChatContent = () => {
     const fetchData = async () => {
       const info = await getGroupInfoById(groupId);
       setIsCreator(info?.createdBy === user.username);
-      console.log(info)
     };
 
     if (groupId) {
@@ -36,24 +43,38 @@ const ChatContent = () => {
       getChatsByGroup(groupId);
     }
   }
-  
 
   async function handleInvite(e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    const usernameToInvite = prompt("Enter the username you want to invite (case-sensitive):");
-    console.log(usernameToInvite)
+    const usernameToInvite = prompt(
+      "Enter the username you want to invite (case-sensitive):"
+    );
+    console.log(usernameToInvite);
     if (usernameToInvite && usernameToInvite !== user.username) {
       try {
-        console.log(usernameToInvite)
+        console.log(usernameToInvite);
         await addUserToGroup(usernameToInvite, groupId);
-        await createChat(groupId, `${usernameToInvite} has joined the chat`);
+        // await createChat(groupId, `${usernameToInvite} has joined the chat`);
       } catch (err) {
         console.error("Invite failed:", err);
       }
     }
     getChatsByGroup(groupId);
+  }
 
+  async function handleMembers(groupId) {
+    if (!showMembers) {
+      const members = await getUsersInGroup(groupId);
+      setGroupMembers(members);
+    }
+    setShowMembers(!showMembers);
+  }
+
+  async function handleRemoveUser(username) {
+    await removeUserFromGroup(username, groupId);
+    const updatedMembers = await getUsersInGroup(groupId);
+    setGroupMembers(updatedMembers);
   }
 
   return (
@@ -62,6 +83,13 @@ const ChatContent = () => {
         {isCreator && (
           <button type="button" onClick={handleInvite}>
             Invite
+          </button>
+        )}
+      </div>
+      <div>
+        {isCreator && (
+          <button type="button" onClick={() => handleMembers(groupId)}>
+            Members
           </button>
         )}
       </div>
@@ -112,6 +140,20 @@ const ChatContent = () => {
           />
           <button type="submit">Share</button>
         </form>
+      </div>
+
+      <div>
+        {showMembers && (
+          <div>
+            {groupMembers.map((member, i) => (
+              <p key={i}>
+                <Link onClick={() => handleRemoveUser(member.username)}>
+                  {member.username}
+                </Link>
+              </p>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
