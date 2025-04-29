@@ -25,15 +25,19 @@ const ChatContent = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const info = await getGroupInfoById(groupId);
-      setIsCreator(info?.createdBy === user.username);
-    };
+      if (groupId && user?.username) {
+        const info = await getGroupInfoById(groupId);
+        setIsCreator(info?.createdBy === user.username);
+        getChatsByGroup(groupId);
+        console.log("group info:", info);
 
-    if (groupId) {
-      getChatsByGroup(groupId);
-      fetchData();
-    }
-  }, [groupId, user.username]);
+      }
+    };
+  
+    fetchData();
+  }, [groupId, user]);
+
+
 
   async function handleSubmit(e) {
     e.preventDefault();

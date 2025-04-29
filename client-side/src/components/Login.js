@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../conpro/Context/UserContext";
+import "../styles/styles.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -21,33 +22,50 @@ const Login = () => {
       });
   }
 
-  function handleRegister(){
-    navigate("/register")
+  function handleRegister() {
+    navigate("/register");
   }
 
   return (
-    <form className="input regfont" onSubmit={handleSubmit}>
-      <h1>LOGIN</h1>
-      <span>Username </span>
-      <input
-        placeholder="Enter username"
-        type="text"
-        name="username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <br></br>
-      <br></br>
-      <span>Password </span>
-      <input
-        placeholder="Enter password"
-        type="password"
-        name="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
-      <br></br>
-      <button>Sign In</button>
-      <button type="button" onClick={handleRegister}>Register</button>
+    <form className="input" onSubmit={handleSubmit}>
+      <div className="mainDisplay">
+        <h1 className="title space-mono-bold">Welcome to TheGathering</h1>
+        <p className="subHeading space-mono-regular">A verse with your friends</p>
+      </div>
+      <div className="centerAlign">
+        <div className="space-mono-regular">
+          <div className="inputBox input ">
+            <input
+              placeholder="Username"
+              type="text"
+              name="username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="inputBox">
+            <input
+              placeholder="Password"
+              type="password"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button className="login">LOGIN</button>
+        </div>
+
+        <div className="questionRegister space-mono-regular">
+          <p>
+            Don't have an account?{" "}
+            <button
+              className="registerButton"
+              type="button"
+              onClick={handleRegister}
+            >
+              Register!
+            </button>
+          </p>
+        </div>
+      </div>
     </form>
   );
 };

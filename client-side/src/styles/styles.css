@@ -1,0 +1,316 @@
+/* Remove form style */
+input,
+textarea,
+select {
+  all: unset;
+  box-sizing: border-box;
+}
+
+/* Font style */
+.space-mono-regular {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.space-mono-regular-small {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-size: smaller;
+  font-style: normal;
+}
+
+.space-mono-bold {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.space-mono-regular-italic {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.space-mono-bold-italic {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* everything else */
+.mainDisplay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: smaller;
+  margin-top: 10vh;
+  margin-bottom: 4em;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.subHeading {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.centerAlign {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Input Box */
+.inputBox {
+  font-size: small;
+  border-radius: 50px;
+  padding: 10px;
+  background-color: #adabab30;
+  width: 50vw;
+  height: 40px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease;
+}
+
+.inputBox input {
+  all: unset;
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+}
+
+.inputBox:hover {
+  outline: none;
+  opacity: 0.5;
+}
+
+/* Login Button */
+.login {
+  all: unset;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 50px;
+  border-left: 0px;
+  padding: 10px;
+  background-color: #570a0a;
+  color: white;
+  width: 50vw;
+  height: 40px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+.login:hover {
+  opacity: 0.7;
+}
+
+.register {
+  all: unset;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 50px;
+  border-left: 0px;
+  padding: 10px;
+  background-color: #570a0a;
+  color: white;
+  width: 50vw;
+  height: 40px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+
+.register:hover {
+  opacity: 0.7;
+}
+
+.questionRegister {
+  font-size: 0.8rem;
+  border-radius: 50px;
+  color: black;
+  width: 80vw;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.registerButton {
+  all: unset;
+  font-weight: bolder;
+  color: #570a0a;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease;
+}
+
+.registerButton:hover {
+  opacity: 0.7;
+}
+
+/* profile card */
+
+.profileCard {
+  border-radius: 20px;
+  width: 50vw;
+  padding: 1em;
+  background-color: #ffffff;
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* profile info */
+.profile-info {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: end;
+}
+
+.profile-name {
+  display: flex;
+  flex-direction: column;
+  font-size: smaller;
+}
+
+.logout {
+  padding: 6px 6px;
+  margin: 7px;
+  border-radius: 100%;
+  border: 1px solid black;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0%;
+}
+
+.logout:hover {
+  background: #570a0a;
+  transform: scale(1.1);
+}
+
+.create {
+  padding: 6px 6px;
+  margin: 7px;
+  border-radius: 100%;
+  border: 1px solid black;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0%;
+}
+
+.create:hover {
+  background: rgba(66, 255, 60, 0.938);
+  transform: scale(1.1);
+}
+
+.duodot {
+  display: flex;
+}
+
+.username {
+  margin: 0%;
+  font-size: x-large;
+}
+
+.fullname {
+  margin: 0%;
+}
+
+/* chats */
+.all-chats {
+  display: flex;
+  flex-direction: row;
+  gap: 8em;
+  padding: 10px;
+  margin: 10px;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+/* buttons for profile*/
+.profilebutton {
+  padding: 6px 6px;
+  margin: 7px;
+  border-radius: 100%;
+  border: 1px solid black;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0%;
+}
+
+.profilebutton:hover {
+  background: rgba(213, 93, 2, 0.652);
+  transform: scale(1.1);
+}
+
+.deletebutton {
+  padding: 6px 6px;
+  margin: 7px;
+  border-radius: 100%;
+  border: 1px solid black;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0%;
+}
+
+.deletebutton:hover {
+  background: rgb(250, 16, 16);
+  transform: scale(1.1);
+}
+
+/* current chats */
+.current-chats {
+}
+
+.links {
+  all: unset;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+/* created chats */
+.created-chats-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4em;
+}

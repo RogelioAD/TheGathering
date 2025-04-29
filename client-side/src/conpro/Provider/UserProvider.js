@@ -22,12 +22,19 @@ export const UserProvider = (props) => {
 
   async function getProfile(username) {
     try {
+      console.log("get profile is called");
       const response = await axios.get(`${baseUrl}profile/${username}`);
-      return response.data; 
+      setUser(response.data); 
+      return response.data;
     } catch (error) {
       console.error("Error fetching User:", error);
       return null;
     }
+  }
+
+  function logout() {
+    setUser(""); 
+    localStorage.removeItem("authToken"); 
   }
   
 
@@ -64,6 +71,7 @@ export const UserProvider = (props) => {
         getProfile,
         createUser,
         loginUser,
+        logout,
         user,
       }}
     >

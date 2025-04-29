@@ -4,7 +4,7 @@ import GroupContext from "../Context/GroupContext";
 import UserContext from "../Context/UserContext";
 
 export const GroupProvider = (props) => {
-  const [group, setGroup] = useState("");
+  const [group] = useState("");
   const [groupInfo, setGroupInfo] = useState(null);
   const [createdGroups, setCreatedGroups] = useState([]);
   const [joinedGroups, setJoinedGroups] = useState([]);
@@ -97,7 +97,7 @@ export const GroupProvider = (props) => {
   }
 
   async function getUsersInGroup(groupId) {
-    console.log("GetusersInGroup is being called")
+    console.log("GetusersInGroup is being called");
     try {
       const res = await axios.get(`${baseGroupUrl}group/${groupId}`);
       return res.data;
@@ -108,9 +108,11 @@ export const GroupProvider = (props) => {
   }
 
   async function removeUserFromGroup(username, groupId) {
-    console.log("removeUser is being called")
+    console.log("removeUser is being called");
     try {
-      const res = await axios.delete(`${baseGroupUrl}${groupId}/user/${username}`);
+      const res = await axios.delete(
+        `${baseGroupUrl}${groupId}/user/${username}`
+      );
       return res.data;
     } catch (err) {
       console.error("Error fetching removeUser:", err);
@@ -148,6 +150,8 @@ export const GroupProvider = (props) => {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      return res.data;
     } catch (err) {
       console.error("Error editing group name:", err);
     }
@@ -168,6 +172,7 @@ export const GroupProvider = (props) => {
         group,
         createdGroups,
         joinedGroups,
+        groupInfo
       }}
     >
       {props.children}

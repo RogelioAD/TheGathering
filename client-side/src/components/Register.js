@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../conpro/Context/UserContext";
+import "../styles/styles.css";
 
 const Register = () => {
   let [user, setUser] = useState({
@@ -31,50 +32,50 @@ const Register = () => {
   }
 
   return (
-    <form className="input regfont" onSubmit={handleSubmit}>
-      <h1>Register</h1>
-      <br></br>
-      <br></br>
-      <span>Username </span>
-      <input
-        placeholder="Enter Username"
-        type="text"
-        name="username"
-        value={user.username}
-        onChange={handleChange}
-      />
-      <br></br>
-      <br></br>
-      <span>Password </span>
-      <input
-        placeholder="Enter Password"
-        type="password"
-        name="password"
-        value={user.password}
-        onChange={handleChange}
-      />
-      <br />
-      <br></br>
-      <span>First Name </span>
-      <input
-        placeholder="Enter First Name"
-        type="text"
-        name="firstName"
-        value={user.firstName}
-        onChange={handleChange}
-      />
-      <br />
-      <br></br>
-      <span>Last Name </span>
-      <input
-        placeholder="Enter Last Name"
-        type="text"
-        name="lastName"
-        value={user.lastName}
-        onChange={handleChange}
-      />
-      <br />
-      <button>Sign Up</button>
+    <form className="input helveticaText" onSubmit={handleSubmit}>
+      <h1 className="mainDisplay title space-mono-bold">Create an account</h1>
+
+      <div className="centerAlign space-mono-regular">
+        <div className="inputBox">
+          <input
+            placeholder="Username"
+            type="text"
+            name="username"
+            value={user.username}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="inputBox">
+          <input
+            placeholder="Password"
+            type="password"
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="inputBox">
+          <input
+            placeholder="First Name"
+            type="text"
+            name="firstName"
+            value={user.firstName}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="inputBox">
+          <input
+            placeholder="Last Name"
+            type="text"
+            name="lastName"
+            value={user.lastName}
+            onChange={handleChange}
+          />
+        </div>
+
+        <button className="register">Sign Up</button>
+      </div>
     </form>
   );
 };
