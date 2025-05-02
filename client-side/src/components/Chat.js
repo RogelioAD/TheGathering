@@ -63,11 +63,16 @@ const ChatContent = () => {
   }
 
   async function handleMembers(groupId) {
-    if (!showMembers) {
-      const members = await getUsersInGroup(groupId);
-      setGroupMembers(members);
-    }
-    setShowMembers(!showMembers);
+    setShowMembers((prevShowMembers) => {
+      const newState = !prevShowMembers;
+      if (newState) {
+        getUsersInGroup(groupId).then((members) => {
+          setGroupMembers(members);
+        });
+      }
+      return newState;
+    });
+    //always showing up to date members list
   }
 
   async function handleRemoveUser(username) {
