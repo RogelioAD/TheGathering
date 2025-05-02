@@ -107,14 +107,14 @@ const Profile = () => {
                   ))}
                 </>
               ) : (
-                <p className="space-mono-regular">
+                <p className="space-mono-regular-small">
                   No Circles yet — you’ll need an invite to join.
                 </p>
               )}
             </div>
 
             <div className="created-chats">
-              <h3 className="space-mono-bold">Circles You Started</h3>
+              <h3 className="space-mono-bold">Circles Started</h3>
               {createdGroups.length > 0 ? (
                 createdGroups.map((group) => (
                   <p

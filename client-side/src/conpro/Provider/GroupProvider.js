@@ -56,14 +56,11 @@ export const GroupProvider = (props) => {
 
   async function addUserToGroup(username, groupId) {
     try {
-      let findUser = await getProfile(username);
-      console.log({ findUser });
-      if (
-        findUser &&
-        username.toLowerCase() === findUser.username.toLowerCase()
-      ) {
+      let findUser = await getProfile(username, false); 
+  
+      if (findUser && username.toLowerCase() === findUser.username.toLowerCase()) {
         const token = localStorage.getItem("authToken");
-
+  
         await axios.post(
           `${baseGroupUrl}`,
           { username, groupId },
@@ -73,7 +70,7 @@ export const GroupProvider = (props) => {
             },
           }
         );
-
+  
         return true;
       } else {
         console.log(`User not found or invalid username: ${username}`);

@@ -58,6 +58,8 @@ const ChatContent = () => {
       }
     }
     getChatsByGroup(groupId);
+    console.log(user);
+
   }
 
   async function handleMembers(groupId) {
@@ -129,7 +131,8 @@ const ChatContent = () => {
         <div className="lower-half">
           {chats.length > 0 ? (
             chats.map((chat, i) => {
-              const isUserMessage = chat.username === user?.username;
+              const isUserMessage =
+                chat.username?.toLowerCase() === user?.username?.toLowerCase();
               const containerClass = isUserMessage
                 ? "message-container-user"
                 : "message-container-guest";
@@ -179,7 +182,10 @@ const ChatContent = () => {
           <div className="all-members">
             {groupMembers.map((member, i) => (
               <p className="member-circle space-mono-regular-italic" key={i}>
-                <Link className="links" onClick={() => handleRemoveUser(member.username)}>
+                <Link
+                  className="links"
+                  onClick={() => handleRemoveUser(member.username)}
+                >
                   {member.username}
                 </Link>
               </p>

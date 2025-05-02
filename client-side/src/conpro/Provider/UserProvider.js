@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { jwtDecode } from 'jwt-decode'; 
+import { jwtDecode } from "jwt-decode";
 import UserContext from "../Context/UserContext";
 
 export const UserProvider = (props) => {
@@ -12,19 +12,23 @@ export const UserProvider = (props) => {
 
     if (token) {
       try {
-        const decodedToken = jwtDecode(token);  
-        setUser(decodedToken); 
+        const decodedToken = jwtDecode(token);
+        setUser(decodedToken);
       } catch (error) {
         console.error("Error decoding token:", error);
       }
     }
   }, []);
 
-  async function getProfile(username) {
+  async function getProfile(username, updateContext = true) {
     try {
       console.log("get profile is called");
       const response = await axios.get(`${baseUrl}profile/${username}`);
-      setUser(response.data); 
+
+      if (updateContext) {
+        setUser(response.data);
+      }
+
       return response.data;
     } catch (error) {
       console.error("Error fetching User:", error);
@@ -33,13 +37,11 @@ export const UserProvider = (props) => {
   }
 
   function logout() {
-    setUser(""); 
-    localStorage.removeItem("authToken"); 
+    setUser("");
+    localStorage.removeItem("authToken");
   }
-  
 
   async function createUser(userInfo) {
-
     const response = await axios.post(baseUrl, userInfo);
     return await new Promise((resolve) => resolve(response.data));
   }
@@ -53,8 +55,8 @@ export const UserProvider = (props) => {
       if (response.data.token) {
         localStorage.setItem("authToken", response.data.token);
         console.log("Login successful, token saved to localStorage");
-        const decodedToken = jwtDecode(response.data.token); 
-        setUser(decodedToken); 
+        const decodedToken = jwtDecode(response.data.token);
+        setUser(decodedToken);
         return response.data;
       } else {
         throw new Error("No token returned from the server.");
