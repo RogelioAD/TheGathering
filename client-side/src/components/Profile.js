@@ -68,80 +68,83 @@ const Profile = () => {
 
   return (
     <>
-      <div className="profileCard centerAlign">
-        <div className="profile-info">
-          <div className="profile-name">
-            <h2 className="username space-mono-bold-italic">{user.username}</h2>
-            <p className="fullname space-mono-regular">
-              {user.firstName} {user.lastName}
-            </p>
-          </div>
-        </div>
-
-        <div className="all-chats">
-          <div className="current-chats">
-            <h3 className="space-mono-bold">Circles You're In</h3>
-            {joinedGroups.length > 0 || createdGroups.length > 0 ? (
-              <>
-                {joinedGroups.map((group) => (
-                  <p
-                    className="space-mono-regular-italic"
-                    key={`joined-${group.groupId}`}
-                  >
-                    <Link className="links" to={`group/${group.groupId}`}>
-                      {group.groupname}
-                    </Link>
-                  </p>
-                ))}
-                {createdGroups.map((group) => (
-                  <p
-                    className="space-mono-regular-italic"
-                    key={`created-${group.groupId}`}
-                  >
-                    <Link className="links" to={`group/${group.groupId}`}>
-                      {group.groupname}
-                    </Link>
-                  </p>
-                ))}
-              </>
-            ) : (
-              <p className="space-mono-regular">No Circles yet — you’ll need an invite to join.</p>
-            )}
+      <div className="profileCardHome centerAlign">
+          <div className="profile-info">
+            <div className="profile-name">
+              <h2 className="username space-mono-bold-italic">
+                {user.username}
+              </h2>
+              <p className="fullname space-mono-regular">
+                {user.firstName} {user.lastName}
+              </p>
+            </div>
           </div>
 
-          <div className="created-chats">
-            <h3 className="space-mono-bold">Circles You Started</h3>
-            {createdGroups.length > 0 ? (
-              createdGroups.map((group) => (
-                <p
-                  className="space-mono-regular-italic created-chats-line"
-                  key={group.groupId}
-                >
-                  <Link className="links" to={`group/${group.groupId}`}>
-                    {group.groupname}
-                  </Link>
-                  <> </>
-                  <button
-                    className="profilebutton"
-                    onClick={() =>
-                      handleEditGroup(group.groupId, group.groupname)
-                    }
-                  >
-                    {" "}
-                  </button>
-                  <button
-                    className="deletebutton"
-                    onClick={() => handleDeleteGroup(group.groupId)}
-                  ></button>
+          <div className="all-chats scroll-component">
+            <div className="current-chats">
+              <h3 className="space-mono-bold">Circles You're In</h3>
+              {joinedGroups.length > 0 || createdGroups.length > 0 ? (
+                <>
+                  {joinedGroups.map((group) => (
+                    <p
+                      className="space-mono-regular-italic"
+                      key={`joined-${group.groupId}`}
+                    >
+                      <Link className="links" to={`group/${group.groupId}`}>
+                        {group.groupname}
+                      </Link>
+                    </p>
+                  ))}
+                  {createdGroups.map((group) => (
+                    <p
+                      className="space-mono-regular-italic"
+                      key={`created-${group.groupId}`}
+                    >
+                      <Link className="links" to={`group/${group.groupId}`}>
+                        {group.groupname}
+                      </Link>
+                    </p>
+                  ))}
+                </>
+              ) : (
+                <p className="space-mono-regular">
+                  No Circles yet — you’ll need an invite to join.
                 </p>
-              ))
-            ) : (
-              <p className="space-mono-regular-small">Create a Circle!</p>
-            )}
-          </div>
-        </div>
+              )}
+            </div>
 
-        <div className="duodot">
+            <div className="created-chats">
+              <h3 className="space-mono-bold">Circles You Started</h3>
+              {createdGroups.length > 0 ? (
+                createdGroups.map((group) => (
+                  <p
+                    className="space-mono-regular-italic created-chats-line"
+                    key={group.groupId}
+                  >
+                    <Link className="links" to={`group/${group.groupId}`}>
+                      {group.groupname}
+                    </Link>
+                    <> </>
+                    <button
+                      className="profilebutton"
+                      onClick={() =>
+                        handleEditGroup(group.groupId, group.groupname)
+                      }
+                    >
+                      {" "}
+                    </button>
+                    <button
+                      className="deletebutton"
+                      onClick={() => handleDeleteGroup(group.groupId)}
+                    ></button>
+                  </p>
+                ))
+              ) : (
+                <p className="space-mono-regular-small">Create a Circle!</p>
+              )}
+            </div>
+          </div>
+          <div className="duodot">
           <button
             className="logout"
             type="button"
@@ -154,7 +157,9 @@ const Profile = () => {
             onClick={handleCreateGroup}
           ></button>
         </div>
-      </div>
+        </div>
+
+
     </>
   );
 };

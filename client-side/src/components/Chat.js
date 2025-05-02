@@ -7,6 +7,7 @@ import GroupContext from "../conpro/Context/GroupContext";
 
 const ChatContent = () => {
   const [message, setMessage] = useState("");
+  const [randMessage, setRandMessage] = useState("");
   const [isCreator, setIsCreator] = useState(false);
   const [groupMembers, setGroupMembers] = useState([]);
   const [showMembers, setShowMembers] = useState(false);
@@ -29,15 +30,11 @@ const ChatContent = () => {
         const info = await getGroupInfoById(groupId);
         setIsCreator(info?.createdBy === user.username);
         getChatsByGroup(groupId);
-        console.log("group info:", info);
-
+        randomMessage();
       }
     };
-  
     fetchData();
   }, [groupId, user]);
-
-
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -50,16 +47,12 @@ const ChatContent = () => {
 
   async function handleInvite(e) {
     e.preventDefault();
-
     const usernameToInvite = prompt(
       "Enter the username you want to invite (case-sensitive):"
     );
-    console.log(usernameToInvite);
     if (usernameToInvite && usernameToInvite !== user.username) {
       try {
-        console.log(usernameToInvite);
         await addUserToGroup(usernameToInvite, groupId);
-        // await createChat(groupId, `${usernameToInvite} has joined the chat`);
       } catch (err) {
         console.error("Invite failed:", err);
       }
@@ -81,77 +74,112 @@ const ChatContent = () => {
     setGroupMembers(updatedMembers);
   }
 
+  function randomMessage() {
+    const messages = [
+      "Waiting for the first spark of today’s reflection...",
+      "Start the day with a word—and a word with your circle.",
+      "No messages yet—maybe you're the one with the insight today!",
+      "Every great conversation starts with a verse.",
+      "Silence is golden... but sharing is better.",
+      "Your thoughts could be the encouragement someone needs today.",
+      "A quiet circle is just one message away from community.",
+      "Got thoughts? Your circle is listening.",
+      "Nothing yet—why not share what stood out to you?",
+      "Like the verse? Say something, even if it’s just an amen.",
+    ];
+    const randIndex = Math.floor(Math.random() * messages.length);
+    setRandMessage(messages[randIndex]);
+  }
+
   return (
-    <>
-      <div>
-        {isCreator && (
-          <button type="button" onClick={handleInvite}>
-            Invite
-          </button>
-        )}
-      </div>
-      <div>
-        {isCreator && (
-          <button type="button" onClick={() => handleMembers(groupId)}>
-            Members
-          </button>
-        )}
-      </div>
-
-      <div>
-        <strong>Verse:</strong>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            <p>{verse?.reference}</p>
-            <p>{verse?.text}</p>
-            <p>{verse?.translation}</p>
-          </>
-        )}
-      </div>
-
-      <div>hi {user.username}</div>
-
-      <div>
-        {chats.length > 0 ? (
-          chats.map((chat, i) => (
-            <div key={i}>
-              {chat.username === "system" ? (
-                <p style={{ fontStyle: "italic", color: "gray" }}>
-                  {chat.message}
-                </p>
-              ) : (
-                <>
-                  <b>{chat.username}</b>
-                  <p>{chat.message}</p>
-                </>
-              )}
+    <div className="profileCard two-section-chat">
+      {/* Verse Section */}
+      <div className="verse-container">
+        <div className="verse-section">
+          {loading ? (
+            <p className="space-mono-regular-small">Loading...</p>
+          ) : (
+            <div className="verse-word-container">
+              <p className="space-mono-bold-italic verse-line">
+                {verse?.reference}
+              </p>
+              <p className="space-mono-regular-small verse-line">
+                {verse?.translation}
+              </p>
+              <p className="space-mono-regular verse-line">{verse?.text}</p>
             </div>
-          ))
-        ) : (
-          <p>Pray, read, and spark up a conversation!</p>
-        )}
+          )}
+        </div>
       </div>
 
-      <div>
-        <form className="input regfont" onSubmit={handleSubmit}>
+      {/* Chat Section */}
+      <div className="chat-content">
+        <div className="inv-memb">
+          {isCreator && (
+            <>
+              <button className="invite-button" onClick={handleInvite}></button>
+              <button
+                className="members-button"
+                onClick={() => handleMembers(groupId)}
+              ></button>
+            </>
+          )}
+        </div>
+
+        <div className="lower-half">
+          {chats.length > 0 ? (
+            chats.map((chat, i) => {
+              const isUserMessage = chat.username === user?.username;
+              const containerClass = isUserMessage
+                ? "message-container-user"
+                : "message-container-guest";
+              const userClass = isUserMessage
+                ? "message-user space-mono-bold"
+                : "message-guest space-mono-bold";
+              const chatClass = isUserMessage
+                ? "message-chat-user space-mono-regular"
+                : "message-chat-guest space-mono-regular";
+
+              return (
+                <div className="chat-container" key={i}>
+                  {chat.username === "system" ? (
+                    <p>{chat.message}</p>
+                  ) : (
+                    <div className={containerClass}>
+                      <b className={userClass}>{chat.username}</b>
+                      <p className={chatClass}>{chat.message}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <p className="chat-container-no-chat space-mono-regular-small">
+              {randMessage}
+            </p>
+          )}
+        </div>
+
+        {/* Message Input */}
+        <form
+          className="input space-mono-regular inputBoxChat"
+          onSubmit={handleSubmit}
+        >
           <input
             placeholder="Type your message..."
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <button type="submit">Share</button>
+          <button className="share-button" type="submit"></button>
         </form>
-      </div>
 
-      <div>
+        {/* Group Members (if shown) */}
         {showMembers && (
-          <div>
+          <div className="all-members">
             {groupMembers.map((member, i) => (
-              <p key={i}>
-                <Link onClick={() => handleRemoveUser(member.username)}>
+              <p className="member-circle space-mono-regular-italic" key={i}>
+                <Link className="links" onClick={() => handleRemoveUser(member.username)}>
                   {member.username}
                 </Link>
               </p>
@@ -159,13 +187,12 @@ const ChatContent = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
 const Chat = () => {
   const { groupId } = useParams();
-
   return (
     <ChatProvider groupId={groupId}>
       <ChatContent />

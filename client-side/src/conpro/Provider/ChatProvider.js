@@ -77,7 +77,7 @@ export const ChatProvider = ({ children, groupId }) => {
     const lastFetchTime = localStorage.getItem(`lastVerseFetch_${groupId}`);
     const currentTime = Date.now();
 
-    if (!lastFetchTime || currentTime - lastFetchTime > 60000) {
+    if (!lastFetchTime || currentTime - lastFetchTime > 600000) {
       postDailyVerse(groupId);
       deleteChatsByGroup(groupId)
     } else {
