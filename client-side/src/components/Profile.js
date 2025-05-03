@@ -114,7 +114,7 @@ const Profile = () => {
             </div>
 
             <div className="created-chats">
-              <h3 className="space-mono-bold">Circles Started</h3>
+              <h3 className="space-mono-bold">Circles You Started</h3>
               {createdGroups.length > 0 ? (
                 createdGroups.map((group) => (
                   <p

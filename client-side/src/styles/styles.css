@@ -276,10 +276,12 @@ select {
 .all-chats {
   display: flex;
   flex-direction: row;
-  gap: 8em;
+  gap: 1em;
   padding: 3px;
   margin: 10px;
   margin-bottom: 3em;
+  width:40em;
+  text-align: center;
 }
 
 /* buttons for profile*/

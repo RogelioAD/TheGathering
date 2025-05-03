@@ -21,15 +21,20 @@ export const ChatProvider = ({ children, groupId }) => {
         translation: payload.translation.name,
       };
 
+      //access verse to self or local storage
       const groupVerseKey = `verse_${groupId}`;
 
+      //object allows us to get a verse saved using our key to find it
       const savedVerse = localStorage.getItem(groupVerseKey);
+
+      //if the saved verse exist we are parsing (one format to another) into an object 'currentVerse'
       const currentVerse = savedVerse ? JSON.parse(savedVerse) : null;
 
+      //comparing new verse to saved or old one
       if (JSON.stringify(currentVerse) !== JSON.stringify(verseObject)) {
-        localStorage.setItem(groupVerseKey, JSON.stringify(verseObject));
-        localStorage.setItem(`lastVerseFetch_${groupId}`, Date.now());
-        setVerse(verseObject);
+        localStorage.setItem(groupVerseKey, JSON.stringify(verseObject));//new verse
+        localStorage.setItem(`lastVerseFetch_${groupId}`, Date.now());//new time stamp of when we fetched verse
+        setVerse(verseObject); //change state
       }
     } catch (error) {
       console.error("Error fetching Daily Verse:", error);
@@ -77,7 +82,7 @@ export const ChatProvider = ({ children, groupId }) => {
     const lastFetchTime = localStorage.getItem(`lastVerseFetch_${groupId}`);
     const currentTime = Date.now();
 
-    if (!lastFetchTime || currentTime - lastFetchTime > 600000) {
+    if (!lastFetchTime || currentTime - lastFetchTime > 60000) {//how long has it been and if it reached desired tim limit if it has execute
       postDailyVerse(groupId);
       deleteChatsByGroup(groupId)
     } else {
